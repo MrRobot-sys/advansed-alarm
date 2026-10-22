@@ -37,6 +37,19 @@ class Settings private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getString(KEY_PIN, DEFAULT_PIN).orEmpty()
         set(value) = prefs.edit().putString(KEY_PIN, value).apply()
 
+    /** На сколько минут переносить будильник кнопкой «Перенести». */
+    var snoozeMinutes: Int
+        get() = prefs.getInt(KEY_SNOOZE_MINUTES, DEFAULT_SNOOZE_MINUTES)
+        set(value) = prefs.edit().putInt(KEY_SNOOZE_MINUTES, value.coerceIn(1, 60)).apply()
+
+    /**
+     * Сколько раз будильник можно перенести подряд. 0 — без ограничения.
+     * Ограничение нужно, чтобы задачи нельзя было откладывать бесконечно.
+     */
+    var maxSnoozes: Int
+        get() = prefs.getInt(KEY_MAX_SNOOZES, DEFAULT_MAX_SNOOZES)
+        set(value) = prefs.edit().putInt(KEY_MAX_SNOOZES, value.coerceIn(0, 10)).apply()
+
     /**
      * Жёсткий режим: дополнительно вызывается системная блокировка экрана
      * (DevicePolicyManager.lockNow). Требует PIN/паттерн на самом телефоне
@@ -71,6 +84,8 @@ class Settings private constructor(private val prefs: SharedPreferences) {
         const val DEFAULT_QUIZ_COUNT = 10
         const val DEFAULT_GROUP_WINDOW = 60
         const val DEFAULT_RING_SECONDS = 60
+        const val DEFAULT_SNOOZE_MINUTES = 5
+        const val DEFAULT_MAX_SNOOZES = 3
 
         private const val PREFS_NAME = "advanced_alarm_settings"
 
@@ -79,6 +94,8 @@ class Settings private constructor(private val prefs: SharedPreferences) {
         private const val KEY_GROUP_WINDOW = "group_window_minutes"
         private const val KEY_RING_SECONDS = "ring_duration_seconds"
         private const val KEY_PIN = "emergency_pin"
+        private const val KEY_SNOOZE_MINUTES = "snooze_minutes"
+        private const val KEY_MAX_SNOOZES = "max_snoozes"
         private const val KEY_HARD_MODE = "hard_mode"
         private const val KEY_WORKING_DAYS = "working_days_no_lock"
         private const val KEY_ALLOWED_PACKAGES = "allowed_packages"

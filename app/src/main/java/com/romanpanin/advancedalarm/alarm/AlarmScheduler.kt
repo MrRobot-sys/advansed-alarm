@@ -36,6 +36,10 @@ object AlarmScheduler {
 
     /** Ближайшее срабатывание будильника после [from]. */
     fun nextTriggerAt(alarm: AlarmItem, from: Long): Long? {
+        // Перенос важнее дневного расписания: будильник звонит раньше,
+        // чем наступит его обычное время.
+        if (alarm.snoozedUntil > from) return alarm.snoozedUntil
+
         if (alarm.days.isEmpty()) {
             val once = Calendar.getInstance().apply { timeInMillis = from }
             once.set(Calendar.HOUR_OF_DAY, alarm.hour)
@@ -57,6 +61,22 @@ object AlarmScheduler {
             if (probe.timeInMillis > from) return probe.timeInMillis
         }
         return null
+    }
+
+    /**
+     * Фактический момент звонка будильника. Для перенесённого будильника это
+     * время переноса, для обычного — время по расписанию.
+     *
+     * Нужен для правил группировки и рабочих дней: они должны знать, когда
+     * будильник на самом деле зазвонил, а не когда он записан в расписании.
+     */
+    fun triggerTimeOf(alarm: AlarmItem, now: Long): Long {
+        val snoozed = alarm.snoozedUntil
+        val delay = now - snoozed
+        if (snoozed > 0L && delay in -SNOOZE_TRIGGER_WINDOW_MS..SNOOZE_TRIGGER_WINDOW_MS) {
+            return snoozed
+        }
+        return lastTriggerAt(alarm, now)
     }
 
     /**
@@ -112,4 +132,7 @@ object AlarmScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
+
+    /** Насколько позже может прийти broadcast, чтобы срабатывание считать переносом. */
+    private const val SNOOZE_TRIGGER_WINDOW_MS = 10 * 60_000L
 }

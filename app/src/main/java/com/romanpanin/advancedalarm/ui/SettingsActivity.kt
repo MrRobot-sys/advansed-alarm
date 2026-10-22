@@ -28,6 +28,8 @@ class SettingsActivity : AppCompatActivity() {
         binding.taskCountInput.setText(settings.quizTaskCount.toString())
         binding.groupWindowInput.setText(settings.groupWindowMinutes.toString())
         binding.ringDurationInput.setText(settings.ringDurationSeconds.toString())
+        binding.snoozeMinutesInput.setText(settings.snoozeMinutes.toString())
+        binding.maxSnoozesInput.setText(settings.maxSnoozes.toString())
         binding.emergencyPinInput.setText(settings.emergencyPin)
         binding.hardModeSwitch.isChecked = settings.hardMode
         binding.allowedPackagesInput.setText(settings.allowedPackages.joinToString(", "))
@@ -65,6 +67,10 @@ class SettingsActivity : AppCompatActivity() {
             .toIntOrNull() ?: settings.groupWindowMinutes
         settings.ringDurationSeconds = binding.ringDurationInput.text.toString()
             .toIntOrNull() ?: settings.ringDurationSeconds
+        settings.snoozeMinutes = binding.snoozeMinutesInput.text.toString()
+            .toIntOrNull() ?: settings.snoozeMinutes
+        settings.maxSnoozes = binding.maxSnoozesInput.text.toString()
+            .toIntOrNull() ?: settings.maxSnoozes
         settings.emergencyPin = binding.emergencyPinInput.text.toString().trim()
             .ifEmpty { Settings.DEFAULT_PIN }
         settings.hardMode = binding.hardModeSwitch.isChecked

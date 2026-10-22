@@ -15,8 +15,19 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarm = AlarmStore(context).get(alarmId) ?: return
 
         val now = System.currentTimeMillis()
-        val triggerAt = AlarmScheduler.lastTriggerAt(alarm, now)
+        val triggerAt = AlarmScheduler.triggerTimeOf(alarm, now)
         val shouldLock = AlarmPolicy.shouldLock(context, alarm, triggerAt)
+
+        // Перенос израсходован: он сработал — в следующий раз будильник зазвонит
+        // в обычное время. Счётчик переносов обнуляется только при обычном
+        // срабатывании, при переносе он продолжает считать переносы подряд.
+        val wasSnoozed = alarm.snoozedUntil > 0L && triggerAt == alarm.snoozedUntil
+        AlarmStore(context).save(
+            alarm.copy(
+                snoozedUntil = 0L,
+                snoozeCount = if (wasSnoozed) alarm.snoozeCount else 0
+            )
+        )
 
         val serviceIntent = Intent(context, AlarmService::class.java).apply {
             putExtra(AlarmService.EXTRA_ALARM_ID, alarmId)

@@ -72,13 +72,27 @@
             android:layout_marginTop="8dp"
             android:text="@string/action_emergency_pin" />
 
-        <Button
-            android:id="@+id/stopButton"
+        <LinearLayout
+            android:id="@+id/actionRow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/action_stop_alarm"
-            android:visibility="gone" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_stop_alarm" />
+
+            <Button
+                android:id="@+id/snoozeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/action_snooze_short"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/quizContainer"

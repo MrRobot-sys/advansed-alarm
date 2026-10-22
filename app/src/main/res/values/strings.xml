@@ -27,6 +27,7 @@
     <string name="alarm_ring_only_tag">без блокировки</string>
     <string name="alarm_no_sound_tag">без звука</string>
     <string name="alarm_no_vibrate_tag">без вибрации</string>
+    <string name="alarm_snoozed_tag">перенесён до %1$s</string>
 
     <!-- Редактор будильника -->
     <string name="alarm_edit_title">Будильник</string>
@@ -48,6 +49,8 @@
     <string name="settings_group_window">Окно группировки будильников, минут</string>
     <string name="settings_ring_duration">Длительность звонка, секунд</string>
     <string name="settings_emergency_pin">Аварийный PIN (4 цифры)</string>
+    <string name="settings_snooze_minutes">Перенос будильника, минут</string>
+    <string name="settings_max_snoozes">Максимум переносов подряд (0 — без ограничения)</string>
     <string name="settings_hard_mode">Жёсткий режим (системная блокировка экрана)</string>
     <string name="settings_hard_mode_hint">Требует PIN на самом телефоне. Во время блокировки камера будет закрыта экраном блокировки системы.</string>
     <string name="settings_working_days">Рабочие дни без блокировки</string>
@@ -82,6 +85,20 @@
     <string name="action_emergency_pin">Аварийный PIN</string>
     <string name="action_stop_alarm">Выключить будильник</string>
     <string name="action_stop_ring">Выключить звонок</string>
+    <string name="action_snooze_short">Перенести</string>
+    <plurals name="action_snooze">
+        <item quantity="one">Перенести на %d минуту</item>
+        <item quantity="few">Перенести на %d минуты</item>
+        <item quantity="many">Перенести на %d минут</item>
+        <item quantity="other">Перенести на %d минут</item>
+    </plurals>
+    <string name="snooze_limit_reached">Лимит переносов исчерпан</string>
+    <plurals name="snooze_done">
+        <item quantity="one">Будильник перенесён на %d минуту</item>
+        <item quantity="few">Будильник перенесён на %d минуты</item>
+        <item quantity="many">Будильник перенесён на %d минут</item>
+        <item quantity="other">Будильник перенесён на %d минут</item>
+    </plurals>
     <string name="torch_unavailable">Фонарик недоступен</string>
     <string name="camera_unavailable">Камера не найдена</string>
     <string name="test_alarm_label">Тестовый будильник</string>

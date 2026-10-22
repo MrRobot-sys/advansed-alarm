@@ -9,6 +9,8 @@ import org.json.JSONObject
  * @param days     дни недели внутренней нумерации (1 = понедельник … 7 = воскресенье);
  *                 пустой набор означает «однократно» — срабатывает только в день создания.
  * @param ringOnly «звонок без блокировки»: будильник только звонит, телефон не блокируется.
+ * @param snoozedUntil момент повторного звонка после переноса (0 — переноса нет).
+ * @param snoozeCount  сколько раз текущее срабатывание уже переносили подряд.
  */
 data class AlarmItem(
     val id: String,
@@ -20,6 +22,8 @@ data class AlarmItem(
     val ringOnly: Boolean = false,
     val vibrate: Boolean = true,
     val sound: Boolean = true,
+    val snoozedUntil: Long = 0L,
+    val snoozeCount: Int = 0,
 ) {
 
     fun timeText(): String = "%02d:%02d".format(hour, minute)
@@ -36,6 +40,8 @@ data class AlarmItem(
         put(KEY_RING_ONLY, ringOnly)
         put(KEY_VIBRATE, vibrate)
         put(KEY_SOUND, sound)
+        put(KEY_SNOOZED_UNTIL, snoozedUntil)
+        put(KEY_SNOOZE_COUNT, snoozeCount)
     }
 
     companion object {
@@ -48,6 +54,8 @@ data class AlarmItem(
         private const val KEY_RING_ONLY = "ringOnly"
         private const val KEY_VIBRATE = "vibrate"
         private const val KEY_SOUND = "sound"
+        private const val KEY_SNOOZED_UNTIL = "snoozedUntil"
+        private const val KEY_SNOOZE_COUNT = "snoozeCount"
 
         fun fromJson(json: JSONObject): AlarmItem {
             val daysArray = json.optJSONArray(KEY_DAYS) ?: JSONArray()
@@ -65,7 +73,9 @@ data class AlarmItem(
                 label = json.optString(KEY_LABEL),
                 ringOnly = json.optBoolean(KEY_RING_ONLY, false),
                 vibrate = json.optBoolean(KEY_VIBRATE, true),
-                sound = json.optBoolean(KEY_SOUND, true)
+                sound = json.optBoolean(KEY_SOUND, true),
+                snoozedUntil = json.optLong(KEY_SNOOZED_UNTIL, 0L),
+                snoozeCount = json.optInt(KEY_SNOOZE_COUNT, 0)
             )
         }
     }

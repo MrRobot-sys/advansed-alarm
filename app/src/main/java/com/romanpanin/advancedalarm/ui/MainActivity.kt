@@ -15,6 +15,8 @@ import com.romanpanin.advancedalarm.data.AlarmStore
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivityMainBinding
 import com.romanpanin.advancedalarm.service.AlarmService
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /** Главный экран: список будильников и быстрый доступ к настройкам. */
 class MainActivity : AppCompatActivity() {
@@ -77,6 +79,9 @@ class MainActivity : AppCompatActivity() {
             if (alarm.ringOnly) add(getString(R.string.alarm_ring_only_tag))
             if (!alarm.sound) add(getString(R.string.alarm_no_sound_tag))
             if (!alarm.vibrate) add(getString(R.string.alarm_no_vibrate_tag))
+            if (alarm.snoozedUntil > System.currentTimeMillis()) {
+                add(getString(R.string.alarm_snoozed_tag, formatTime(alarm.snoozedUntil)))
+            }
         }
         view.findViewById<TextView>(R.id.alarmTags).text =
             extra.joinToString(" · ")
@@ -84,7 +89,13 @@ class MainActivity : AppCompatActivity() {
         val toggle = view.findViewById<SwitchMaterial>(R.id.alarmEnabled)
         toggle.isChecked = alarm.enabled
         toggle.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, checked ->
-            store.save(alarm.copy(enabled = checked))
+            // Выключенный будильник переноса не ждёт.
+            val snoozedUntil = if (checked && alarm.snoozedUntil > System.currentTimeMillis()) {
+                alarm.snoozedUntil
+            } else {
+                0L
+            }
+            store.save(alarm.copy(enabled = checked, snoozedUntil = snoozedUntil))
             AlarmScheduler.rescheduleAll(this)
         })
 
@@ -99,5 +110,9 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TEST_DURATION_MINUTES = 1
+
+        /** Время переноса в формате ЧЧ:ММ. */
+        fun formatTime(timeInMillis: Long): String =
+            SimpleDateFormat("HH:mm", Locale.getDefault()).format(timeInMillis)
     }
 }

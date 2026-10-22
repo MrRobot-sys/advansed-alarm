@@ -17,9 +17,13 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import com.romanpanin.advancedalarm.App
 import com.romanpanin.advancedalarm.R
+import com.romanpanin.advancedalarm.alarm.AlarmScheduler
+import com.romanpanin.advancedalarm.alarm.SnoozePolicy
 import com.romanpanin.advancedalarm.data.AlarmStore
 import com.romanpanin.advancedalarm.data.Settings
+import com.romanpanin.advancedalarm.lock.AllowedPackages
 import com.romanpanin.advancedalarm.lock.LockController
+import com.romanpanin.advancedalarm.util.TorchController
 import kotlin.math.max
 
 /**
@@ -57,6 +61,11 @@ class AlarmService : Service() {
             return START_STICKY
         }
 
+        if (intent?.action == ACTION_SNOOZE) {
+            handleSnooze(intent.getStringExtra(EXTRA_ALARM_ID).orEmpty())
+            return START_NOT_STICKY
+        }
+
         val isTest = intent?.getBooleanExtra(EXTRA_TEST, false) == true
         val alarmId = intent?.getStringExtra(EXTRA_ALARM_ID).orEmpty()
         val shouldLock = intent?.getBooleanExtra(EXTRA_SHOULD_LOCK, false) ?: false
@@ -76,7 +85,7 @@ class AlarmService : Service() {
         }
 
         val state = LockState.current()
-        startForeground(NOTIFICATION_ID, buildNotification(state.alarmLabel, state.ringOnly))
+        startForeground(NOTIFICATION_ID, buildNotification(state))
 
         // Звук включаем, только если ещё не вышло его время: сервис мог быть
         // перезапущен системой уже после окончания звонка.
@@ -147,6 +156,56 @@ class AlarmService : Service() {
         }, max(0L, remaining))
     }
 
+    /**
+     * Перенос будильника: гасим звонок, снимаем текущую блокировку и планируем
+     * повторный звонок через заданное число минут.
+     *
+     * Перенос возможен только пока идёт звонок: он отменяет начало блокировки.
+     */
+    private fun handleSnooze(alarmId: String) {
+        val settings = Settings.of(this)
+        val alarm = AlarmStore(this).get(alarmId)
+        val state = LockState.current()
+
+        if (alarm == null || state.phase != LockState.Phase.RINGING) {
+            // Переносить нечего — просто гасим звонок.
+            stopSound()
+            stopVibration()
+            stopSelf()
+            return
+        }
+
+        val snoozed = SnoozePolicy.applySnooze(
+            alarm = alarm,
+            now = System.currentTimeMillis(),
+            minutes = settings.snoozeMinutes,
+            maxSnoozes = settings.maxSnoozes
+        )
+
+        if (snoozed == null) {
+            // Лимит переносов исчерпан: звонок гасится, блокировка продолжается.
+            stopSound()
+            stopVibration()
+            if (state.ringOnly) {
+                LockState.release(this)
+            } else {
+                LockState.setPhase(LockState.Phase.LOCKED)
+                updateNotification()
+            }
+            stopSelf()
+            return
+        }
+
+        AlarmStore(this).save(snoozed)
+        stopSound()
+        stopVibration()
+        LockState.release(this)
+        AllowedPackages.clear()
+        TorchController.reset()
+        AlarmScheduler.rescheduleAll(this)
+        stopSelf()
+    }
+
     private fun startSound() {
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
@@ -203,7 +262,8 @@ class AlarmService : Service() {
         stopVibration()
     }
 
-    private fun buildNotification(label: String, ringOnly: Boolean): Notification {
+    private fun buildNotification(state: LockState.Snapshot): Notification {
+        val ringOnly = state.ringOnly
         val contentIntent = PendingIntent.getActivity(
             this,
             REQUEST_CONTENT,
@@ -214,7 +274,7 @@ class AlarmService : Service() {
 
         val builder = Notification.Builder(this, App.CHANNEL_ALARM)
             .setSmallIcon(R.drawable.ic_alarm)
-            .setContentTitle(label.ifBlank { getString(R.string.app_name) })
+            .setContentTitle(state.alarmLabel.ifBlank { getString(R.string.app_name) })
             .setContentText(
                 getString(if (ringOnly) R.string.notification_ring_only else R.string.notification_locked)
             )
@@ -256,6 +316,24 @@ class AlarmService : Service() {
             )
         }
 
+        // Перенос доступен только пока идёт звонок.
+        if (state.phase == LockState.Phase.RINGING && state.alarmId.isNotBlank()) {
+            val snoozeIntent = PendingIntent.getService(
+                this,
+                REQUEST_SNOOZE,
+                Intent(this, AlarmService::class.java)
+                    .setAction(ACTION_SNOOZE)
+                    .putExtra(EXTRA_ALARM_ID, state.alarmId),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            builder.addAction(
+                Notification.Action.Builder(
+                    Icon.createWithResource(this, R.drawable.ic_snooze),
+                    getString(R.string.action_snooze_short),
+                    snoozeIntent
+                ).build()
+            )
+        }
         return builder.build()
     }
 
@@ -263,7 +341,7 @@ class AlarmService : Service() {
         val state = LockState.current()
         runCatching {
             val manager = getSystemService(android.app.NotificationManager::class.java)
-            manager.notify(NOTIFICATION_ID, buildNotification(state.alarmLabel, state.ringOnly))
+            manager.notify(NOTIFICATION_ID, buildNotification(state))
         }
     }
 
@@ -276,11 +354,13 @@ class AlarmService : Service() {
 
         const val ACTION_STOP = "com.romanpanin.advancedalarm.ACTION_STOP"
         const val ACTION_STOP_SOUND = "com.romanpanin.advancedalarm.ACTION_STOP_SOUND"
+        const val ACTION_SNOOZE = "com.romanpanin.advancedalarm.ACTION_SNOOZE"
 
         private const val NOTIFICATION_ID = 1001
         private const val REQUEST_CONTENT = 10
         private const val REQUEST_STOP = 11
         private const val REQUEST_STOP_SOUND = 12
+        private const val REQUEST_SNOOZE = 13
 
         /** Запуск тестовой блокировки из настроек. */
         fun startTest(context: android.content.Context, durationMinutes: Int) {

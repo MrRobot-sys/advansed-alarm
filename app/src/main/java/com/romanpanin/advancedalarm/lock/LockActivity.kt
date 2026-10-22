@@ -21,6 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.romanpanin.advancedalarm.R
+import com.romanpanin.advancedalarm.alarm.SnoozePolicy
+import com.romanpanin.advancedalarm.data.AlarmStore
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivityLockBinding
 import com.romanpanin.advancedalarm.quiz.QuizProblem
@@ -58,6 +60,7 @@ class LockActivity : AppCompatActivity() {
         binding.cameraButton.setOnClickListener { openCamera() }
         binding.emergencyButton.setOnClickListener { askEmergencyPin() }
         binding.stopButton.setOnClickListener { onStopClicked() }
+        binding.snoozeButton.setOnClickListener { snoozeAlarm() }
         binding.quizCheckButton.setOnClickListener { checkAnswer() }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -133,12 +136,15 @@ class LockActivity : AppCompatActivity() {
                 binding.quizContainer.visibility = View.GONE
                 binding.emergencyButton.visibility =
                     if (state.ringOnly) View.GONE else View.VISIBLE
-                binding.stopButton.visibility = View.VISIBLE
+                binding.actionRow.visibility = View.VISIBLE
                 // Без блокировки кнопка выключает будильник целиком,
                 // с блокировкой — только звонок.
                 binding.stopButton.setText(
                     if (state.ringOnly) R.string.action_stop_alarm else R.string.action_stop_ring
                 )
+                val snoozeVisible = canSnooze(state)
+                binding.snoozeButton.visibility = if (snoozeVisible) View.VISIBLE else View.GONE
+                if (snoozeVisible) binding.snoozeButton.text = snoozeLabel()
             }
 
             LockState.Phase.LOCKED -> {
@@ -146,7 +152,7 @@ class LockActivity : AppCompatActivity() {
                 binding.countdownText.visibility = View.VISIBLE
                 binding.quizContainer.visibility = View.GONE
                 binding.emergencyButton.visibility = View.VISIBLE
-                binding.stopButton.visibility = View.GONE
+                binding.actionRow.visibility = View.GONE
             }
 
             LockState.Phase.QUIZ -> {
@@ -154,7 +160,7 @@ class LockActivity : AppCompatActivity() {
                 binding.countdownText.visibility = View.GONE
                 binding.quizContainer.visibility = View.VISIBLE
                 binding.emergencyButton.visibility = View.VISIBLE
-                binding.stopButton.visibility = View.GONE
+                binding.actionRow.visibility = View.GONE
                 showProblem(state)
             }
         }
@@ -298,6 +304,42 @@ class LockActivity : AppCompatActivity() {
         startService(
             Intent(this, AlarmService::class.java).setAction(AlarmService.ACTION_STOP_SOUND)
         )
+    }
+
+    /**
+     * Перенос будильника: гасит звонок и откладывает следующий звонок.
+     * Доступен только пока идёт звонок — перенос отменяет начало блокировки.
+     */
+    private fun snoozeAlarm() {
+        val state = LockState.current()
+        if (!canSnooze(state)) {
+            Toast.makeText(this, R.string.snooze_limit_reached, Toast.LENGTH_SHORT).show()
+            return
+        }
+        val minutes = Settings.of(this).snoozeMinutes
+        startService(
+            Intent(this, AlarmService::class.java)
+                .setAction(AlarmService.ACTION_SNOOZE)
+                .putExtra(AlarmService.EXTRA_ALARM_ID, state.alarmId)
+        )
+        Toast.makeText(
+            this,
+            resources.getQuantityString(R.plurals.snooze_done, minutes, minutes),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    /** Перенос возможен только у настоящего будильника и в пределах лимита. */
+    private fun canSnooze(state: LockState.Snapshot): Boolean {
+        if (state.alarmId.isBlank()) return false
+        val alarm = AlarmStore(this).get(state.alarmId) ?: return false
+        val settings = Settings.of(this)
+        return SnoozePolicy.canSnooze(alarm.snoozeCount, settings.maxSnoozes)
+    }
+
+    private fun snoozeLabel(): String {
+        val minutes = Settings.of(this).snoozeMinutes
+        return resources.getQuantityString(R.plurals.action_snooze, minutes, minutes)
     }
 
     private fun dismissAlarm() {
