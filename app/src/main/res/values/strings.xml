@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Advanced Alarm</string>
+
+    <!-- Уведомления -->
+    <string name="channel_alarm">Будильник</string>
+    <string name="channel_alarm_desc">Звонок будильника и блокировка экрана</string>
+    <string name="channel_service">Служба блокировки</string>
+    <string name="channel_service_desc">Служебный канал фоновой блокировки</string>
+    <string name="notification_locked">Телефон заблокирован</string>
+    <string name="notification_ring_only">Будильник звонит</string>
+    <string name="action_stop_sound">Выключить</string>
+
+    <!-- Разрешения и компоненты -->
+    <string name="device_admin_label">Advanced Alarm (администратор устройства)</string>
+    <string name="accessibility_label">Advanced Alarm (защита экрана)</string>
+    <string name="accessibility_description">Нужен, чтобы не дать закрыть экран блокировки во время будильника. Служба только следит за тем, какое приложение открыто, и ничего не читает.</string>
+
+    <!-- Главный экран -->
+    <string name="main_title">Будильники</string>
+    <string name="action_add_alarm">Добавить будильник</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_onboarding">Проверка разрешений</string>
+    <string name="action_test_lock">Проверить блокировку (1 минута)</string>
+    <string name="main_empty">Будильников пока нет. Нажмите «Добавить будильник».</string>
+    <string name="alarm_default_label">Будильник</string>
+    <string name="alarm_ring_only_tag">без блокировки</string>
+    <string name="alarm_no_sound_tag">без звука</string>
+    <string name="alarm_no_vibrate_tag">без вибрации</string>
+
+    <!-- Редактор будильника -->
+    <string name="alarm_edit_title">Будильник</string>
+    <string name="alarm_time_label">Время</string>
+    <string name="alarm_days_label">Повтор</string>
+    <string name="alarm_label_hint">Название (необязательно)</string>
+    <string name="alarm_ring_only">Звонок без блокировки</string>
+    <string name="alarm_vibrate">Вибрация</string>
+    <string name="alarm_sound">Звук</string>
+    <string name="action_save">Сохранить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="alarm_pick_days">Выберите хотя бы один день</string>
+    <string name="alarm_saved">Будильник сохранён</string>
+
+    <!-- Настройки -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_lock_duration">Блокировка после звонка, минут</string>
+    <string name="settings_task_count">Количество задач</string>
+    <string name="settings_group_window">Окно группировки будильников, минут</string>
+    <string name="settings_ring_duration">Длительность звонка, секунд</string>
+    <string name="settings_emergency_pin">Аварийный PIN (4 цифры)</string>
+    <string name="settings_hard_mode">Жёсткий режим (системная блокировка экрана)</string>
+    <string name="settings_hard_mode_hint">Требует PIN на самом телефоне. Во время блокировки камера будет закрыта экраном блокировки системы.</string>
+    <string name="settings_working_days">Рабочие дни без блокировки</string>
+    <string name="settings_allowed_packages">Разрешённые приложения (через запятую)</string>
+    <string name="settings_allowed_packages_hint">Например: com.android.vending, com.whatsapp. Пакеты звонков, шторки и клавиатуры разрешены всегда.</string>
+    <string name="settings_saved">Настройки сохранены</string>
+    <string name="action_test_now">Проверить блокировку (1 минута)</string>
+
+    <!-- Чеклист разрешений -->
+    <string name="onboarding_title">Что нужно включить</string>
+    <string name="onboarding_status">Служба защиты экрана: %1$s\nАдминистратор устройства: %2$s\nPIN на телефоне: %3$s</string>
+    <string name="onboarding_ok">включено</string>
+    <string name="onboarding_missing">не включено</string>
+    <string name="onboarding_accessibility">1. Включить службу «Advanced Alarm (защита экрана)»</string>
+    <string name="onboarding_device_admin">2. Включить администратора устройства</string>
+    <string name="onboarding_notifications">3. Разрешить уведомления</string>
+    <string name="onboarding_battery">4. Отключить оптимизацию батареи</string>
+    <string name="onboarding_full_screen">5. Разрешить полноэкранные уведомления</string>
+    <string name="onboarding_security">6. Задать PIN на телефоне</string>
+    <string name="onboarding_finish">Готово</string>
+
+    <!-- Экран блокировки -->
+    <string name="lock_alarm">Будильник</string>
+    <string name="lock_ring_only">Будильник звонит</string>
+    <string name="lock_blocked">Телефон заблокирован</string>
+    <string name="lock_quiz">Решите задачи, чтобы разблокировать</string>
+    <string name="lock_countdown">До задач: %1$s</string>
+    <string name="lock_back_blocked">Телефон заблокирован</string>
+    <string name="action_torch_on">Фонарик</string>
+    <string name="action_torch_off">Выключить фонарик</string>
+    <string name="action_camera">Камера</string>
+    <string name="action_emergency_pin">Аварийный PIN</string>
+    <string name="action_stop_alarm">Выключить будильник</string>
+    <string name="action_stop_ring">Выключить звонок</string>
+    <string name="torch_unavailable">Фонарик недоступен</string>
+    <string name="camera_unavailable">Камера не найдена</string>
+    <string name="test_alarm_label">Тестовый будильник</string>
+
+    <!-- Задачи -->
+    <string name="quiz_progress">Задача %1$d из %2$d</string>
+    <string name="quiz_variable">%1$s =</string>
+    <string name="quiz_check">Проверить</string>
+    <string name="quiz_fill_all">Заполните все поля</string>
+    <string name="quiz_bad_number">Нужны числа (можно «7/2»)</string>
+    <string name="quiz_correct">Верно</string>
+    <string name="quiz_wrong">Неверно, попробуй ещё раз</string>
+    <string name="quiz_unlocked">Телефон разблокирован</string>
+
+    <!-- Аварийный PIN -->
+    <string name="emergency_pin_title">Аварийный PIN</string>
+    <string name="emergency_pin_message">Введите аварийный PIN, чтобы выйти из блокировки.</string>
+    <string name="emergency_pin_wrong">Неверный PIN</string>
+    <string name="action_unlock">Разблокировать</string>
+    <string name="action_cancel">Отмена</string>
+</resources>

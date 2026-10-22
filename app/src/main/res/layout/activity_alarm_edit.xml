@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm_time_label"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/timeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:textSize="44sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm_days_label"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp">
+
+            <CheckBox
+                android:id="@+id/dayMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пн" />
+
+            <CheckBox
+                android:id="@+id/dayTuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вт" />
+
+            <CheckBox
+                android:id="@+id/dayWednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ср" />
+
+            <CheckBox
+                android:id="@+id/dayThursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Чт" />
+
+            <CheckBox
+                android:id="@+id/dayFriday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Пт" />
+
+            <CheckBox
+                android:id="@+id/daySaturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сб" />
+
+            <CheckBox
+                android:id="@+id/daySunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Вс" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/labelInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/alarm_label_hint"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/ringOnlySwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/alarm_ring_only" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/vibrateSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm_vibrate" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/soundSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm_sound" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/action_save" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/action_delete"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

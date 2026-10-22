@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- На телефонах с вырезом/дыркой в экране рисуем под системную панель. -->
+    <style name="Theme.AdvancedAlarm.Lock" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/lock_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+</resources>

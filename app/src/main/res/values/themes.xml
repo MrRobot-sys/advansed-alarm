@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AdvancedAlarm" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/lock_accent</item>
+    </style>
+
+    <style name="Theme.AdvancedAlarm.Lock" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@color/lock_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">false</item>
+    </style>
+
+    <style name="LockClock">
+        <item name="android:textSize">68sp</item>
+        <item name="android:textColor">@color/lock_text</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="LockBody">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/lock_text</item>
+    </style>
+
+    <style name="LockDim">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/lock_text_dim</item>
+    </style>
+</resources>
