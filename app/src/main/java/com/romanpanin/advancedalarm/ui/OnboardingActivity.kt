@@ -1,5 +1,6 @@
 package com.romanpanin.advancedalarm.ui
 
+import com.romanpanin.advancedalarm.util.Insets
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Insets.applyEdgeToEdge(this)
+        Insets.applySafeArea(binding.root, ime = true)
 
         binding.accessibilityButton.setOnClickListener {
             LockController.openAccessibilitySettings(this)

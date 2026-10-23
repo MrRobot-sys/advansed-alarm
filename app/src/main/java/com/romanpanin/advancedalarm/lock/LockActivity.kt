@@ -1,5 +1,6 @@
 package com.romanpanin.advancedalarm.lock
 
+import com.romanpanin.advancedalarm.util.Insets
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
@@ -54,6 +55,7 @@ class LockActivity : AppCompatActivity() {
 
         binding = ActivityLockBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Insets.applyCutout(binding.root)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         binding.torchButton.setOnClickListener { toggleTorch() }

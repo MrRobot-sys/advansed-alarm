@@ -1,5 +1,6 @@
 package com.romanpanin.advancedalarm.ui
 
+import com.romanpanin.advancedalarm.util.Insets
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Insets.applyEdgeToEdge(this)
+        Insets.applySafeArea(binding.root)
 
         binding.addAlarmButton.setOnClickListener {
             startActivity(Intent(this, AlarmEditActivity::class.java))

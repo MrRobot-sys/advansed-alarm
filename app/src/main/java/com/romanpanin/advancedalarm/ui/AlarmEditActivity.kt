@@ -1,5 +1,6 @@
 package com.romanpanin.advancedalarm.ui
 
+import com.romanpanin.advancedalarm.util.Insets
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.widget.CheckBox
@@ -33,6 +34,8 @@ class AlarmEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAlarmEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Insets.applyEdgeToEdge(this)
+        Insets.applySafeArea(binding.root, ime = true)
 
         alarmId = intent.getStringExtra(EXTRA_ALARM_ID)
         val existing = alarmId?.let { store.get(it) }

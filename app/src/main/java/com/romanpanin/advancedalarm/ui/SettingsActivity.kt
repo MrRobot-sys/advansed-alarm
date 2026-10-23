@@ -1,5 +1,6 @@
 package com.romanpanin.advancedalarm.ui
 
+import com.romanpanin.advancedalarm.util.Insets
 import android.os.Bundle
 import android.widget.CheckBox
 import android.widget.Toast
@@ -21,6 +22,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Insets.applyEdgeToEdge(this)
+        Insets.applySafeArea(binding.root, ime = true)
 
         settings = Settings.of(this)
 
