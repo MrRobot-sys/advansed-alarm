@@ -1,6 +1,5 @@
 package com.romanpanin.advancedalarm.ui
 
-import com.romanpanin.advancedalarm.util.Insets
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +15,7 @@ import com.romanpanin.advancedalarm.data.AlarmStore
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivityMainBinding
 import com.romanpanin.advancedalarm.service.AlarmService
+import com.romanpanin.advancedalarm.util.Insets
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Контент не уезжает под строку состояния и панель навигации.
         Insets.applyEdgeToEdge(this)
         Insets.applySafeArea(binding.root)
 
@@ -62,9 +64,49 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.emptyText.visibility = if (alarms.isEmpty()) View.VISIBLE else View.GONE
+        renderNextAlarm(alarms)
 
         alarms.forEach { alarm ->
             binding.alarmList.addView(createAlarmView(alarm))
+        }
+    }
+
+    /** Строка «Следующий — 07:30, через 9 ч 12 мин». */
+    private fun renderNextAlarm(alarms: List<AlarmItem>) {
+        val now = System.currentTimeMillis()
+        val next = alarms.asSequence()
+            .filter { it.enabled }
+            .mapNotNull { alarm -> AlarmScheduler.nextTriggerAt(alarm, now)?.let { alarm to it } }
+            .minByOrNull { it.second }
+
+        binding.nextAlarmText.text = if (next == null) {
+            getString(R.string.main_next_none)
+        } else {
+            val delay = next.second - now
+            getString(
+                R.string.main_next_alarm,
+                formatTime(next.second),
+                getString(R.string.main_in, relativeDuration(delay))
+            )
+        }
+    }
+
+    /** «через 45 мин», «через 9 ч 12 мин» или «через 2 д» — коротко и без падежей. */
+    private fun relativeDuration(delayMillis: Long): String {
+        val minutes = (delayMillis / MINUTE_MILLIS).coerceAtLeast(1)
+        return when {
+            minutes < HOUR_MILLIS / MINUTE_MILLIS ->
+                getString(R.string.main_duration_minutes, minutes)
+            minutes < DAY_MILLIS / MINUTE_MILLIS -> {
+                val hours = minutes / (HOUR_MILLIS / MINUTE_MILLIS)
+                val rest = minutes % (HOUR_MILLIS / MINUTE_MILLIS)
+                if (rest == 0L) {
+                    getString(R.string.main_duration_hours, hours)
+                } else {
+                    getString(R.string.main_duration_hours_minutes, hours, rest)
+                }
+            }
+            else -> getString(R.string.main_duration_days, minutes / (DAY_MILLIS / MINUTE_MILLIS))
         }
     }
 
@@ -86,8 +128,11 @@ class MainActivity : AppCompatActivity() {
                 add(getString(R.string.alarm_snoozed_tag, formatTime(alarm.snoozedUntil)))
             }
         }
-        view.findViewById<TextView>(R.id.alarmTags).text =
-            extra.joinToString(" · ")
+        view.findViewById<TextView>(R.id.alarmTags).apply {
+            val tags = extra.joinToString(" · ")
+            visibility = if (tags.isEmpty()) View.GONE else View.VISIBLE
+            text = tags
+        }
 
         val toggle = view.findViewById<SwitchMaterial>(R.id.alarmEnabled)
         toggle.isChecked = alarm.enabled
@@ -113,6 +158,9 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TEST_DURATION_MINUTES = 1
+        private const val MINUTE_MILLIS = 60_000L
+        private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
+        private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
         /** Время переноса в формате ЧЧ:ММ. */
         fun formatTime(timeInMillis: Long): String =

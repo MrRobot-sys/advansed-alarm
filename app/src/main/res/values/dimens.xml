@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Ритм макета: одинаковые отступы и радиусы на всех экранах. -->
+    <dimen name="screen_padding">20dp</dimen>
+    <dimen name="screen_padding_top">8dp</dimen>
+    <dimen name="card_radius">24dp</dimen>
+    <dimen name="card_radius_small">18dp</dimen>
+    <dimen name="card_padding">20dp</dimen>
+    <dimen name="section_gap">24dp</dimen>
+    <dimen name="list_gap">12dp</dimen>
+    <dimen name="fab_clearance">88dp</dimen>
+</resources>

@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- На телефонах с вырезом/дыркой в экране рисуем под системную панель. -->
+    <!--
+        Полная копия базового стиля блокировки: вариант ресурса для API 27+
+        заменяет базовый целиком, поэтому здесь продублированы все атрибуты
+        плюс режим выреза экрана.
+    -->
     <style name="Theme.AdvancedAlarm.Lock" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:windowBackground">@color/lock_background</item>
+        <item name="colorPrimary">@color/lock_accent</item>
+        <item name="colorOnPrimary">@color/lock_background</item>
+        <item name="colorPrimaryContainer">@color/lock_surface</item>
+        <item name="colorOnPrimaryContainer">@color/lock_text</item>
+        <item name="colorSurface">@color/lock_surface</item>
+        <item name="colorOnSurface">@color/lock_text</item>
+        <item name="colorSurfaceVariant">@color/lock_surface</item>
+        <item name="colorOnSurfaceVariant">@color/lock_text_dim</item>
+        <item name="colorSecondaryContainer">@color/lock_surface_high</item>
+        <item name="colorOnSecondaryContainer">@color/lock_text</item>
+        <item name="colorOutline">@color/lock_text_dim</item>
+        <item name="colorError">@color/lock_error</item>
+        <item name="android:windowBackground">@drawable/bg_lock_gradient</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Тёмная палитра: тот же индиго, но приглушённый под тёмный фон. -->
+    <color name="accent">#B9C4FF</color>
+    <color name="on_accent">#1A2260</color>
+    <color name="accent_container">#2C377F</color>
+    <color name="on_accent_container">#DDE1FF</color>
+
+    <color name="background">#0D0F15</color>
+    <color name="surface">#0D0F15</color>
+    <color name="surface_container_low">#141721</color>
+    <color name="surface_container">#181B26</color>
+    <color name="surface_container_high">#1F2330</color>
+
+    <color name="on_surface">#E8EAF2</color>
+    <color name="on_surface_variant">#A6ACC0</color>
+    <color name="outline">#3A3F52</color>
+    <color name="outline_variant">#252936</color>
+
+    <color name="danger">#FFB3B8</color>
+    <color name="on_danger">#5C0A12</color>
+</resources>

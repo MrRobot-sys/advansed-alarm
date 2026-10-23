@@ -1,6 +1,5 @@
 package com.romanpanin.advancedalarm.ui
 
-import com.romanpanin.advancedalarm.util.Insets
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +7,7 @@ import com.romanpanin.advancedalarm.R
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivityOnboardingBinding
 import com.romanpanin.advancedalarm.lock.LockController
+import com.romanpanin.advancedalarm.util.Insets
 
 /**
  * Чеклист первичной настройки: какие разрешения нужно выдать вручную,
@@ -21,8 +21,11 @@ class OnboardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         Insets.applyEdgeToEdge(this)
         Insets.applySafeArea(binding.root, ime = true)
+
+        binding.backButton.setOnClickListener { finish() }
 
         binding.accessibilityButton.setOnClickListener {
             LockController.openAccessibilitySettings(this)

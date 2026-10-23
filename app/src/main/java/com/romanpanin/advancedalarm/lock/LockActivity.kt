@@ -1,6 +1,5 @@
 package com.romanpanin.advancedalarm.lock
 
-import com.romanpanin.advancedalarm.util.Insets
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
@@ -26,6 +25,7 @@ import com.romanpanin.advancedalarm.alarm.SnoozePolicy
 import com.romanpanin.advancedalarm.data.AlarmStore
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivityLockBinding
+import com.romanpanin.advancedalarm.util.Insets
 import com.romanpanin.advancedalarm.quiz.QuizProblem
 import com.romanpanin.advancedalarm.service.AlarmService
 import com.romanpanin.advancedalarm.service.LockState
@@ -55,8 +55,8 @@ class LockActivity : AppCompatActivity() {
 
         binding = ActivityLockBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Insets.applyCutout(binding.root)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        Insets.applyCutout(binding.root)
 
         binding.torchButton.setOnClickListener { toggleTorch() }
         binding.cameraButton.setOnClickListener { openCamera() }
@@ -220,10 +220,13 @@ class LockActivity : AppCompatActivity() {
                 hint = "0"
                 setTextColor(getColor(R.color.lock_text))
                 setHintTextColor(getColor(R.color.lock_text_dim))
+                setBackgroundResource(R.drawable.bg_lock_input)
+                gravity = Gravity.CENTER
+                textSize = 22f
                 layoutParams = LinearLayout.LayoutParams(
                     (150 * density).toInt(),
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
+                    (58 * density).toInt()
+                ).apply { marginStart = (12 * density).toInt() }
             }
 
             row.addView(label)

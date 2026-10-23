@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="lock_background">#0B1020</color>
-    <color name="lock_text">#FFFFFFFF</color>
-    <color name="lock_text_dim">#FF8892B0</color>
-    <color name="lock_accent">#FF4F8CFF</color>
-    <color name="lock_error">#FFFF6B6B</color>
+    <!-- Светлая палитра: спокойный индиго на почти белом фоне. -->
+    <color name="accent">#4C5BD4</color>
+    <color name="on_accent">#FFFFFFFF</color>
+    <color name="accent_container">#E2E5FF</color>
+    <color name="on_accent_container">#141A4B</color>
+
+    <color name="background">#F4F5FA</color>
+    <color name="surface">#F4F5FA</color>
+    <color name="surface_container_low">#FFFFFFFF</color>
+    <color name="surface_container">#FBFBFE</color>
+    <color name="surface_container_high">#EDEFF7</color>
+
+    <color name="on_surface">#15171F</color>
+    <color name="on_surface_variant">#5B6072</color>
+    <color name="outline">#C7CAD8</color>
+    <color name="outline_variant">#E3E5EF</color>
+
+    <color name="danger">#C4364A</color>
+    <color name="on_danger">#FFFFFFFF</color>
+
+    <!-- Экран блокировки всегда тёмный: эти цвета не зависят от темы. -->
+    <color name="lock_background">#070A12</color>
+    <color name="lock_background_glow">#2A3C6E</color>
+    <color name="lock_surface">#151B2B</color>
+    <color name="lock_surface_high">#232C44</color>
+    <color name="lock_text">#F4F6FF</color>
+    <color name="lock_text_dim">#8D96B3</color>
+    <color name="lock_accent">#8FA8FF</color>
+    <color name="lock_error">#FF8A8A</color>
 </resources>

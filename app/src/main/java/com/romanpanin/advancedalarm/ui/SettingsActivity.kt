@@ -1,6 +1,5 @@
 package com.romanpanin.advancedalarm.ui
 
-import com.romanpanin.advancedalarm.util.Insets
 import android.os.Bundle
 import android.widget.CheckBox
 import android.widget.Toast
@@ -11,6 +10,7 @@ import com.romanpanin.advancedalarm.data.Days
 import com.romanpanin.advancedalarm.data.Settings
 import com.romanpanin.advancedalarm.databinding.ActivitySettingsBinding
 import com.romanpanin.advancedalarm.service.AlarmService
+import com.romanpanin.advancedalarm.util.Insets
 
 /** Настройки: длительность блокировки, число задач, аварийный PIN, рабочие дни. */
 class SettingsActivity : AppCompatActivity() {
@@ -22,8 +22,11 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         Insets.applyEdgeToEdge(this)
         Insets.applySafeArea(binding.root, ime = true)
+
+        binding.backButton.setOnClickListener { finish() }
 
         settings = Settings.of(this)
 

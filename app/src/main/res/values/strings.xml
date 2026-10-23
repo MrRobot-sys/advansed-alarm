@@ -23,6 +23,17 @@
     <string name="action_onboarding">Проверка разрешений</string>
     <string name="action_test_lock">Проверить блокировку (1 минута)</string>
     <string name="main_empty">Будильников пока нет. Нажмите «Добавить будильник».</string>
+    <string name="main_empty_title">Пока пусто</string>
+    <string name="main_empty_hint">Добавьте первый будильник кнопкой ниже.</string>
+    <string name="main_next_alarm">Следующий — %1$s, %2$s</string>
+    <string name="main_next_none">Все будильники выключены</string>
+    <string name="main_in">через %1$s</string>
+    <string name="main_duration_hours_minutes">%1$d ч %2$d мин</string>
+    <string name="main_duration_hours">%1$d ч</string>
+    <string name="main_duration_minutes">%1$d мин</string>
+    <string name="main_duration_days">%1$d д</string>
+    <string name="action_back">Назад</string>
+    <string name="action_open">Открыть</string>
     <string name="alarm_default_label">Будильник</string>
     <string name="alarm_ring_only_tag">без блокировки</string>
     <string name="alarm_no_sound_tag">без звука</string>
@@ -32,7 +43,15 @@
     <!-- Редактор будильника -->
     <string name="alarm_edit_title">Будильник</string>
     <string name="alarm_time_label">Время</string>
+    <string name="alarm_time_hint">Нажмите, чтобы изменить</string>
     <string name="alarm_days_label">Повтор</string>
+    <string name="day_mon">Пн</string>
+    <string name="day_tue">Вт</string>
+    <string name="day_wed">Ср</string>
+    <string name="day_thu">Чт</string>
+    <string name="day_fri">Пт</string>
+    <string name="day_sat">Сб</string>
+    <string name="day_sun">Вс</string>
     <string name="alarm_label_hint">Название (необязательно)</string>
     <string name="alarm_ring_only">Звонок без блокировки</string>
     <string name="alarm_vibrate">Вибрация</string>
@@ -44,6 +63,10 @@
 
     <!-- Настройки -->
     <string name="settings_title">Настройки</string>
+    <string name="settings_section_lock">Блокировка</string>
+    <string name="settings_section_tasks">Задачи</string>
+    <string name="settings_section_security">Безопасность</string>
+    <string name="settings_section_apps">Исключения</string>
     <string name="settings_lock_duration">Блокировка после звонка, минут</string>
     <string name="settings_task_count">Количество задач</string>
     <string name="settings_group_window">Окно группировки будильников, минут</string>
@@ -71,6 +94,7 @@
     <string name="onboarding_full_screen">5. Разрешить полноэкранные уведомления</string>
     <string name="onboarding_security">6. Задать PIN на телефоне</string>
     <string name="onboarding_finish">Готово</string>
+    <string name="onboarding_intro">Без этих разрешений блокировка не сработает надёжно. Включите всё по порядку.</string>
 
     <!-- Экран блокировки -->
     <string name="lock_alarm">Будильник</string>
